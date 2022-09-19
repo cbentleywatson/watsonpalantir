@@ -4,7 +4,7 @@ version: '3'
 services:
          back-end:
                  #image: z2b1m8m3/compose-test
-               build: ./Docker-AWS-Crash-Course
+               build: ./back-end
                container_name: the-back-end
                ports:
                        - 5005:5000
