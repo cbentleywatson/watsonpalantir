@@ -1,4 +1,4 @@
-# pull official base image
+#https://github.com/harblaith7/Docker-AWS-Crash-Course.git# pull official base image
 FROM node:18-alpine3.15
 
 
@@ -23,7 +23,12 @@ COPY package.json .
 RUN npm install
 COPY . .
 # start app
-EXPOSE 3000
+# The EXPOSE command links the port the PROGRAAM sees to the Port Chrome communicates with. The second number is the port to use with the browser, the first is what react uses 
+
+#EXPOSE 3000:3000
+EXPOSE  3000
+#EXPOSE 80:3000
+#EXPOSE 3000:3000
 
 CMD ["npm", "start"]
 
