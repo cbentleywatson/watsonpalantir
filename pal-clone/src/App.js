@@ -1,9 +1,23 @@
 import React from 'react';
 import './App.css';
-  
+
+// New
+import axios from "axios";
+import Quotes from  "./Quotes";
+
+
+
+
+
+
 function App() {
     return ( 
-      <h1> Hello World! </h1>
+      <div className="App">
+      	<header className="App-header">
+           <Quotes />
+      	</header>
+     </div>
+
     );
 }
   
