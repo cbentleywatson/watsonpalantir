@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-var sample_quote = {text:"West with the Night", author:"Hemingway"};
+var sample_quote = {text:"West witdd the Night", author:"Hemingway"};
 
 
 app.use(function(req, res, next) {

@@ -2,11 +2,12 @@ version: '3'
 
 # image: public.ecr.aws/z2b1m8m3/compose-test
 services:
-         back-end:
-               image: cbentleywatson/pal-back-end
-               ports:
-                       - 5005:5000
-         front-end:
+        
+        front-end:
                image: cbentleywatson/pal-front-end
                ports:
                         - 80:3000
+        back-end:
+               image: cbentleywatson/pal-back-end
+               ports:
+                       - 5005:5000
