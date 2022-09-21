@@ -15,4 +15,4 @@ services:
                 build: ./pal-clone
                 image: "cbentleywatson/pal-front-end"
                 ports:
-                        - 3000:3000
+                        - 3005:3000

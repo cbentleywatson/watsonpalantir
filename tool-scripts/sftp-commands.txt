@@ -1,0 +1,2 @@
+put ../docker-compose-production.yml
+exit
