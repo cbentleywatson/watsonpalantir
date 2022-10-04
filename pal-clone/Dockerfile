@@ -1,5 +1,5 @@
 #https://github.com/harblaith7/Docker-AWS-Crash-Course.git# pull official base image
-FROM node:18-alpine3.15
+FROM node:18-alpine3.15 as build
 
 
 # add `/app/node_modules/.bin` to $PATH
@@ -25,16 +25,17 @@ COPY . .
 # start app
 # The EXPOSE command links the port the PROGRAAM sees to the Port Chrome communicates with. The second number is the port to use with the browser, the first is what react uses 
 
-#RUN npm run build
+RUN npm run build
 
 # Serving React with NGINX
-# FROM nginx:1.19.0
-# WORKDIR /usr/share/nginx/html
-# RUN rm -rf ./*
-# COPY --from=builder /app/build . # Would need to ensure the path to the build files is the same..
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+FROM nginx:stable-alpine
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+COPY --from=build /app/build . 
+# Would need to ensure the path to the build files is the same..
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
-
+EXPOSE 80
 #EXPOSE 3000:3000
 EXPOSE  3000
 #EXPOSE 80:3000
@@ -43,7 +44,7 @@ EXPOSE  3000
 
 
 
-CMD ["npm", "start"]
+#CMD ["npm", "start"]
 #CMD ["npm", "run", "" ]
 #CMD ["server","-s build"] 
 # didn't work..
