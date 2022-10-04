@@ -10,4 +10,4 @@ services:
         back-end:
                image: cbentleywatson/pal-back-end
                ports:
-                       - 5005:5000
+                       - 5000:5000

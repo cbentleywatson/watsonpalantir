@@ -38,6 +38,10 @@ function stop_both(){
 	docker stop $FRONT_END_IMAGE_NAME
 	docker stop $BACK_END_IMAGE_NAME
 }
+function rm_both(){
+	docker rm $FRONT_END_IMAGE_NAME
+	docker rm $BACK_END_IMAGE_NAME
+}
 
 # echo $1
 if [ $1 == "build" ]; then
@@ -52,7 +56,8 @@ fi
 
 
 if [ $1 == "run" ]; then
-	stop_both	
+	stop_both
+	rm_both	
 	echo "IN RUN!!!!"
 	run_both
 fi
@@ -63,7 +68,7 @@ if [ $1 == "all" ]; then
 	run_both
 fi
 
-	echo "Not a valid arg -- Valid args are build, run, stop, and all"
+# echo "Not a valid arg -- Valid args are build, run, stop (actually does a full remove rn), and all"
 
 
 
