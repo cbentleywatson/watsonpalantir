@@ -1,0 +1,22 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+pal-clone/node_modules
+pal-clone/.pnp
+pal-clone.pnp.js
+
+# testing
+pal-clone/coverage
+
+# production
+pal-clone/build
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# misc
+pal-clone/.env.local
+pal-clone/.env.development.local
+pal-clone/.env.test.local
+pal-clone/.env.production.local
+pal-clone/npm-debug.log*
+pal-clone/yarn-debug.log*
+pal-clone/yarn-error.log*
