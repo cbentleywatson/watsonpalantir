@@ -1,24 +1,11 @@
-import React from 'react';
-import './App.css';
-
-// New
-import axios from "axios";
-import Quotes from  "./Quotes";
-import LineChart from "./LineChart";
-
-import Plottable  from "plottable";
-import * as d3 from "d3";
-
-/*
 import React, {useState} from "react";
 import axios from "axios";
 import Plottable  from "plottable";
 import * as d3 from "d3";
 function LineChart() {
-*/
-
 /*
-        var xScale = new Plottable.Scales.Time();
+
+	var xScale = new Plottable.Scales.Time();
 var yScale = new Plottable.Scales.Linear();
 var colorScale = new Plottable.Scales.Color();
 
@@ -61,47 +48,33 @@ d3.tsv("data.tsv", function(error, data) {
   });
 });
 */
+//function lineChart(){
+//	return (<h1> line-chart? </h1>  )
+//}
 
 
 
-function App() {
-    return ( 
-      <div className="App">
-	<header className="App-header">
-           <Quotes />
-	   <LineChart />
-      	</header>
-    </div>
 
-    );
-}
-  
-export default App;
+        const [text, setText] = useState("");
+        const [author, setAuthor] = useState("");
 
-/*
-import logo from './logo.svg';
-import './App.css';
+         function getQuote() {
+                  axios.get("http://cbw123.xyz:5000/",  { crossdomain: true }).then(response => {
+                          console.log(response.data);
+                          setText(response.data.text);
+                          setAuthor(response.data.author);
+                        });
+                   }
+          return (
+                    <div>
+                      <button onClick={getQuote}>
+                      Generate Quote
+                  </button>
+                   <h1>{text}</h1>
+                  <h3>{"-" + author}</h3>
+                  </div>
+                  )
+        }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
-*/
+export default  LineChart;
