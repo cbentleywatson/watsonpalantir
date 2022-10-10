@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import axios from "axios";
 import Plottable  from "plottable";
 import * as d3 from "d3";
+import Svg from "./Svg";
+import Circle from "./Circle";
+//import AnimatedCircles from "./AnimatedCircles";
 function LineChart() {
 /*
 
@@ -66,12 +69,21 @@ d3.tsv("data.tsv", function(error, data) {
                         });
                    }
           return (
+
                     <div>
+                    <Svg/>
+                    <Circle/>
+                    {/*
+                         <svg style={{
+                     border: "5px solid gold"
+                    }} />
+                   
                       <button onClick={getQuote}>
                       Generate Quote
                   </button>
                    <h1>{text}</h1>
                   <h3>{"-" + author}</h3>
+                  */}
                   </div>
                   )
         }

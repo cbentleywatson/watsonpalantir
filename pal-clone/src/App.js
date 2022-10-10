@@ -5,7 +5,7 @@ import './App.css';
 import axios from "axios";
 import Quotes from  "./Quotes";
 import LineChart from "./LineChart";
-
+import Svg from "./Svg";
 import Plottable  from "plottable";
 import * as d3 from "d3";
 
@@ -70,9 +70,11 @@ function App() {
 	<header className="App-header">
            <Quotes />
 	   <LineChart />
+     
       	</header>
+       
     </div>
-
+   
     );
 }
   
