@@ -4,6 +4,7 @@ import Plottable  from "plottable";
 import * as d3 from "d3";
 import Svg from "./Svg";
 import Circle from "./Circle";
+import MakeBasicChart from "./MakeBasicChart";
 //import AnimatedCircles from "./AnimatedCircles";
 function LineChart() {
 /*
@@ -71,13 +72,17 @@ d3.tsv("data.tsv", function(error, data) {
           return (
 
                     <div>
-                    <Svg/>
-                    <Circle/>
-                    {/*
+                   
+                    
+                    
+                  
+                   
+                  
+                   <Svg/>
                          <svg style={{
                      border: "5px solid gold"
                     }} />
-                   
+                   {/*
                       <button onClick={getQuote}>
                       Generate Quote
                   </button>

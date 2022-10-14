@@ -7,8 +7,8 @@ const Circle = () => {
       svgElement.append("circle")
         .attr("cx", 150)
         .attr("cy", 70)
-        .attr("r",  50
-        )
+        .attr("r",  50)
+        .attr("fill", "purple")
     }, [])
     return (
       <svg
