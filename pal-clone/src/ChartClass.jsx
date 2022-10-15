@@ -18,8 +18,8 @@ class ChartClass extends React.Component {
      //const svgElement = d3.select(this.myRef.current).append('svg').attr('id','d3_demo');
     }
     componentDidMount(){
-            // The SVG seems to be present...
-          
+            // The New Chart Information is going to come from the free code campl thing below
+          // https://www.freecodecamp.org/news/how-to-work-with-d3-jss-general-update-pattern-8adce8d55418/
           
             var size = 200;
             const margin = { top: 20, right: 30, bottom: 55, left: 70 },
@@ -35,7 +35,8 @@ class ChartClass extends React.Component {
             
             //d3.select(this.myRef.current).append('svg')
             svgElement.attr('width',width).attr('height',height).attr("viewBox", [0, 0, width, height]);
-             svgElement.append("rect").attr("width", width).attr("height", height).attr("fill", "#859900");
+          svgElement.append("rect").attr("width", width).attr("height", height).attr("fill", "#859900"); // The color is from the sublime color scheme
+
             
              svgElement.append("circle")
             .attr("cx", 0)
@@ -44,34 +45,143 @@ class ChartClass extends React.Component {
             .attr("fill", "blue");
 
             const x_scale = d3
-	        .scaleBand()
-	        .range([margin.left, width - margin.right])
-	        .padding(0.1);
+	        .scaleLinear()
+	       // .range([margin.left, width - margin.right])
+	       .domain([0,1000])
+           .range([margin.left, width-margin.left]) 
+           ;
 
             const y_scale = d3.scaleLinear()
+            .domain([0,1000])
             .range([height - margin.bottom, margin.top]);
+            
             let x_axis = d3.axisBottom(x_scale);
-
             let y_axis = d3.axisLeft(y_scale);
 
+
+
+/*
+
             svgElement
- .append("g")
-  .attr("transform", `translate(0,${height - margin.bottom})`)
-  .call(x_axis)
-  .selectAll("text") // everything from this point is optional
-  .style("text-anchor", "end")
-  .attr("dx", "-.8em")
-  .attr("dy", ".15em")
-  .attr("transform", "rotate(-65)");
+            .append("g")
+            .attr("transform", `translate(0,${height - margin.bottom})`)
+            .call(x_axis)
+            .selectAll("text") // everything from this point is optional ... IDK what the author ment there
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-65)");
+*/
+            // add y axis
+            svgElement
+            .append("g")
+            .attr("transform", `translate(${margin.left},0)`)
+            .call(y_axis);
+            // add y axis
+        
+            svgElement
+            .append("g")
+            .attr("transform", `translate(0,${height - margin.bottom})`)
+            .call(x_axis)
+            .style("text-anchor", "end")
+            ;
 
-// add y axis
-svgElement
- .append("g")
-  .attr("transform", `translate(${margin.left},0)`)
-  .call(y_axis);
+           var yElements = Array.from({length: 40}, () => Math.floor(Math.random() * 40));
+            var xElements = Array.from(Array(1000).keys());
+            //const result = a1.map((item,index) => {return [item,a2[index]]})
+            
+            const result = xElements.map((item,index) => {return [item, 99]});
+            
+            console.log(result);
+           
+            var line = d3.line()
+            .x(Array.from(Array(1000).keys()))
+            .y(Array.from({length: 40}, () => Math.floor(Math.random() * 40)));
+             
+            
+            svgElement.append('line')
+            .style("stroke", "black")
+            .style("stroke-width", 10)
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 200)
+            .attr("y2", 200); 
+            
+            //p = d3.line()([[10, 60], [40, 90], [60, 10], [190, 10]]);
+            
+            svgElement
+            .append("path")
+            //.attr("d", line(data))
+            
+            
+
+            // This Syntax creates a line with a 2d array
+            
+            .attr("d", d3.line()([[0, 100], [100, 100], [100, 150], [150, 150]]))
+            .attr("stroke", "purple")
+            .style("stroke-width", 5)
+            .style("fill", "none") // Without this a weird black shape is produced behid the line
+            ;
+            /*
+            svgElement
+            .append("path")
+            .attr("d", d3.line().x([0,100,100,150]).y([100,100,150,150])   )
+            .attr("stroke", "purple")
+            .style("stroke-width", 5)
+            .style("fill", "none") // Without this a weird black shape is produced behid the line
+            ;
+          */
+            /*
+            var dd = d3.line()
+
+                .x(result => x_scale(result[0]))
+                .y(result => y_scale(result[1]));
 
 
+                svgElement.append("path").attr("stroke", "steelblue").attr("stroke-width", 1.5)
+                
+                
+                .attr("d", d3.line()
+      
+                .x(function(xElements) { return x_scale(x=>x) })
+                .y(function(yElements) { return y_scale(x=>x) })
+                
+     
+                );
+               */ 
+                //.attr("d",line);
+                /*
+            
+            
+*/
 
+    /*
+      .attr("d", d3.line()
+      
+        .x(function(d) { return x(d.date) })
+        .y(function(d) { return y(d.value) })
+        
+        .x(function(d) { return x(d.date) })
+        .y(function(d) { return y(d.value) })       
+        )
+*/
+
+            /*            
+            svgElement.append('line')
+    .style("stroke", "purple")
+    .style("stroke-width", 10000);
+
+        svgElement.append("path")
+        //.datum(dataset1) 
+        .attr("class", "line") 
+        .attr("transform", "translate(" + 100 + "," + 100 + ")")
+        .attr("d", line)
+        .style("fill", "none")
+        .style("stroke", "#CC0000")
+        .style("stroke-width", "2");
+
+    */
+            // If things go terribly wrong... Consider adding react dom library ...https://github.com/react-d3-library/react-d3-library/wiki/Functionality
 
 
 
@@ -114,7 +224,8 @@ const svg = d3.select(this.myRef.current).append('svg').attr("viewBox", [0, 0, w
        //<div id ="chart-root"></div>
        //ref={ref}
         //<div ref={this.myRef} id ="chart-root" ></div>
-        <svg ref={this.myRef} id ="chart-root"  viewBox="0 0 841.9 595.3"></svg>
+        // <svg ref={this.myRef} id ="chart-root"  viewBox="0 0 841.9 595.3"></svg>
+        <svg ref={this.myRef} id ="chart-root"></svg>
 
 
        
