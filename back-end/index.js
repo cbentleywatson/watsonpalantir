@@ -1,8 +1,11 @@
 const express = require("express");
-
+const sampleStockData = require("./data/sampleStockData.json")  
 const app = express();
 
 var sample_quote = {text:"West witdd the Night", author:"Hemingway"};
+
+// This could actually be converted to JSON her instead of in the req
+
 
 
 app.use(function(req, res, next) {
@@ -25,6 +28,13 @@ app.get("/me", (req, res) => {
   res.send("Hi I am Laith");
 });
 
-app.listen(5000, () => {
+// This needs to send the data/sample-data.json file   
+app.get("/data/sampleStockData", (req, res) => {
+  res.json(sampleStockData); // This should set the header automatically
+});
+
+
+
+app.listen(5011, () => {
   console.log("listening");
 });
