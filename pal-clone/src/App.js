@@ -11,12 +11,13 @@ import MakeBasicChart from './MakeBasicChart';
 import Circle from "./Circle";
 import ChartClass from"./ChartClass";
 import ReactLogo from"./ReactLogo";
+import FirstStockChart from './FirstStockChart';
 
 function App() {
     return ( 
       <div className="App">
 	      <header className="App-header">
-          <ChartClass/>
+          <FirstStockChart/>
           <Quotes />
         </header>
       </div>
