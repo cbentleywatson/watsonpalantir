@@ -1,0 +1,15 @@
+text#chartTitle {
+    text-decoration: underline;
+    font-style: italic;
+  }
+path#stockPrices{
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5;
+}
+path#testLine{
+    fill: none;
+    stroke: violet;
+    stroke-width: 3;
+    fill: none;
+}
