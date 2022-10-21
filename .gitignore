@@ -20,3 +20,4 @@ pal-clone/.env.production.local
 pal-clone/npm-debug.log*
 pal-clone/yarn-debug.log*
 pal-clone/yarn-error.log*
+node_modules

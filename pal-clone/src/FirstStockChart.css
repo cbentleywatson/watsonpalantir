@@ -1,6 +1,8 @@
 text#chartTitle {
     text-decoration: underline;
     font-style: italic;
+    font-size: 15px;
+    text-anchor: middle;
   }
 path#stockPrices{
     fill: none;
@@ -10,6 +12,6 @@ path#stockPrices{
 path#testLine{
     fill: none;
     stroke: violet;
-    stroke-width: 3;
+    stroke-width: 1;
     fill: none;
 }

@@ -22,27 +22,19 @@ const filteredData = chartResultsData['timestamp'].map((time, index) => ({
   volume: quoteData['volume'][index]
 }));
 
-app.get("/data/SanitizedStockData", (req, res) => {
-  res.json(filteredData); // This should set the header automatically
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
+ // ACTUAL CORS STUFF
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
+
+
+
+app.get("/data/SanitizedStockData", (req, res) => {
+  res.json(filteredData); // This should set the header automatically
+});
+
 
 
 
