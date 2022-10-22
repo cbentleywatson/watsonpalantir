@@ -17,8 +17,10 @@ class FirstStockChart extends React.Component {
     this.yRange =[0,0];
     this.xRange =[0,0];
     this.hasRendered = -1;
-    this.y_scale = d3.scaleLinear().domain([0,1000]).range([0,1000]);
+    this.x_scale = d3.scaleLinear();
+    this.y_scale = d3.scaleLinear();//.domain([0,1000]).range([0,1000]);
     this.data ="";
+    this.line = d3.line();
 }
   // Modifies a line that displays on the graph... If the line isn't present it is appended to the svg
   changeLine(linePath) {
@@ -87,64 +89,53 @@ class FirstStockChart extends React.Component {
 
       svgElement
       .append("text")
+      .attr("id", "chartTitle")
       .attr("x", width / 2)
       .attr("y", this.margin.top + 2)
-      .attr("id", "chartTitle");
+      ;
 
       svgElement.select('text#chartTitle').text("Stock Chart");
 
-     axios.get("http://localhost:5011/data/SanitizedStockData",  { crossdomain: true }).then(response => {
-            // the filteredData assignment can be used to add another layer of filtering 
-            var filteredData =response.data ;
+      this.x_scale.range(this.xRange); // As soon as we know the width of the chart we can set the range to map to
+      this.y_scale.range(this.yRange); // this will fill the yScale with the relevant data
 
-          // This syntax will filter the dates correctly
-          const thisYearStartDate = new Date(2008, 11, 31);
+     
+        svgElement.append('path').attr('id', 'stockPrices'); // idk if this is important...  
+        svgElement.append('path').attr('id', 'testLine'); // This line is y Cross hair
+        // The xRange[0] element seemed like it might cause problems ... and it did. This line makes a g group named chart title and moves it to the start of the 
+        // range covered by the x axis            
+        // g chart title might just be a terrible minomer from debugging... Seems like it's the y_axis
+        svgElement.append("g").attr("id", "y_axis").attr("transform", `translate(${xRange[0]},0)`);//.attr("transform", `translate(${xRange[0]},0)`).call(y_axis); 
+        svgElement.append("g").attr("id", "x_axis").attr("transform", `translate(0,${this.yRange[0]})`);
+      
+        const thisYearStartDate = new Date(2008, 11, 31);
+        
+        axios.get("http://localhost:5011/data/SanitizedStockData",  { crossdomain: true }).then(response => {
+            // the filteredData assignment can be used to add another layer of filtering 
+          var filteredData =response.data ;
           filteredData = filteredData.filter(function (e) {
             return e.date > thisYearStartDate;
           });
-            this.data = filteredData;
 
-            var xExtent = d3.extent(filteredData, d => d['date']);
-            var yExtent = d3.extent(filteredData, d => d['close']);
-
-
-            var x_scale = d3.scaleLinear().domain(xExtent).range(this.xRange);
-            this.x_scale =x_scale;
+            this.data = filteredData; // This is somehow important for passing the data into other functions
             
             
-            // yScale converts an xData value to a d3 value
-            var y_scale = d3.scaleLinear().domain([0,1000]).range(this.yRange); // this will create a dummy yScale
-            this.y_scale =y_scale;
-            y_scale.domain(yExtent); // this will fill the yScale with the relevant data
+            this.x_scale.domain(d3.extent(filteredData, d => d['date']));
+            this.y_scale.domain(d3.extent(filteredData, d => d['close']));
             
-            let x_axis = d3.axisBottom(x_scale).tickFormat(d3.timeFormat("%b %y")); // Control what you see on the axis w/ time format
-            let y_axis = d3.axisLeft(y_scale);
-
-            // This creates the line that will be loaded onto the svg 
-            const line = d3.line()
-            .x(  d => {return x_scale(d['date']);}   )
-            .y(   d => {return y_scale(d['close']);} );
             
-            svgElement  // The svgPath must be created BEFORE the data is assigned because other wise it doesn't update?
-            .append('path')
-            .data([filteredData]) // binds data to the line, allowing access to 
-            .attr('id', 'stockPrices') // idk if this is important...  
-            .attr('d', line); 
+            let x_axis = d3.axisBottom(this.x_scale).tickFormat(d3.timeFormat("%b %y")); // Control what you see on the axis w/ time format
+            let y_axis = d3.axisLeft(this.y_scale);
 
-
-            // These lines add the axis -- the transform/ translate functions moves the y axis a bit to the right, the x axis down;
-            // xRange and yRange are defined near the Margin set up
+            this.line // Put the actual data into the d3 line we want to use.
+            .x(  d => {return this.x_scale(d['date']);}   )
+            .y(   d => {return this.y_scale(d['close']);} );
             
-            // This area is being used to test if changeLine passes the info and doesn't create a second set of lines.
-            svgElement.append('path').attr('id', 'testLine'); // This line is y Cross hair
 
-            //linePath =[[0,0],[400,0 ]];
-            //this.changeLine(linePath); // these can be used to draw something BEFORE
-
-            svgElement.append("g").attr("id", "chartTitle").attr("transform", `translate(${xRange[0]},0)`).call(y_axis);
-
-            // This function adds the axis and the transform moves it down to the lower margin
-            svgElement.append("g").attr("transform", `translate(0,${this.yRange[0]})`).call(x_axis);
+            svgElement.select('path#stockPrices').data([filteredData]).attr('d', this.line);
+            svgElement.select('g#y_axis').call(y_axis);
+            svgElement.select('g#x_axis').call(x_axis);
+            //svgElement.select('path#testLine')
 
           });
     }
