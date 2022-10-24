@@ -20,6 +20,7 @@ class FirstStockChart extends React.Component {
     this.x_scale = d3.scaleLinear();
     this.y_scale = d3.scaleLinear();//.domain([0,1000]).range([0,1000]);
     this.data ="";
+    this.filteredData ="";
     this.line = d3.line();
 }
   // Modifies a line that displays on the graph... If the line isn't present it is appended to the svg
@@ -37,6 +38,34 @@ class FirstStockChart extends React.Component {
   
    }
    
+   filterData(startDate){
+    this.filteredData = this.data.filter(function (e) {
+      return e.date > startDate;
+    });
+
+   }
+
+   // All of the elements driven by data - The stock price lines, the scales, and the axis are updated here based on the filtered data
+   updateChartWithFilteredData(){
+    const svgElement = d3.select(this.myRef.current);
+    this.x_scale.domain(d3.extent(this.filteredData, d => d['date']));
+    this.y_scale.domain(d3.extent(this.filteredData, d => d['close']));
+    
+    
+    let x_axis = d3.axisBottom(this.x_scale).tickFormat(d3.timeFormat("%b %y")); // Control what you see on the axis w/ time format
+    let y_axis = d3.axisLeft(this.y_scale);
+
+    this.line // Put the actual data into the d3 line we want to use.
+    .x(  d => {return this.x_scale(d['date']);}   )
+    .y(   d => {return this.y_scale(d['close']);} );
+    
+
+    svgElement.select('path#stockPrices').data([this.filteredData]).attr('d', this.line);
+    svgElement.select('g#y_axis').call(y_axis);
+    svgElement.select('g#x_axis').call(x_axis);
+    //svgElement.select('path#testLine')
+   }
+
   handleMouseMove = (e) => {
     const svgElement = d3.select(this.myRef.current);
     var mouseX = e.clientX - this.loc.x  ; //- dim.left ;
@@ -45,9 +74,10 @@ class FirstStockChart extends React.Component {
     var chartX =mouseX-this.margin.left; // Actually this would be this.margin.left //  This is the number of pixels away from the o on the xAxis
     var dataX = this.x_scale.invert(chartX+70); // this the closest time stamp given the mouse position
 
-    var Index = d3.minIndex(this.data, d => Math.abs(d['date'] - dataX ));
+    //var Index = d3.minIndex(this.data, d => Math.abs(d['date'] - dataX ));
+    var Index = d3.minIndex(this.filteredData, d => Math.abs(d['date'] - dataX ));
     //console.log(this.data[Index]);
-    var closePrice = this.data[Index];
+    var closePrice = this.filteredData[Index];
     var date = new Date();
     date = closePrice.date;
     var linePath =[[mouseX,this.yRange[0]],[mouseX , this.y_scale(closePrice.close) ]];
@@ -59,84 +89,54 @@ class FirstStockChart extends React.Component {
   
           //width = document.querySelector("body").clientWidth, // This is basically here as a note...
     componentDidMount(){
-     
-      // var twoD_Data = [[20, 60], [60, 20], [100, 60]];
-
      // Set up Parts of the graph that AREN'T Data Driven 
       var height = 500, width = height*2;      
       // This Snippet allows dynamic graph resizing
-      width = window.innerWidth - this.margin.left - this.margin.right; // Gets the value of the   width when auto resizing
-      var targetWidth = height *2;
-      width = ( width > targetWidth ? targetWidth : width ); // Shrink the graph if needeed -- Might be excessive / Useless   
-      
-      width = 1000; // This is here for debugging the line test thing
+      //width = window.innerWidth - this.margin.left - this.margin.right; // Gets the value of the   width when auto resizing
+      //width = ( width > targetWidth ? targetWidth : width ); // Shrink the graph if needeed -- Might be excessive / Useless   
 
       this.yRange = [height - this.margin.bottom, this.margin.top]; 
-      const xRange = [this.margin.left, width - this.margin.right ]; // Defines maximum and minimum horizontal boundaries of chart body 
-      this.xRange =xRange;
+      this.xRange = [this.margin.left, width - this.margin.right ];
       const svgElement = d3.select(this.myRef.current); // The key line that allows the selection of the svg CRUCIAL #859900
 
       // The View Box attribute was removed because I want the entire thing every time
       svgElement.attr('width',width).attr('height',height).style("background", "#859900");
-      //svgElement.attr('width',width).attr('height',height).attr("viewBox", [0, 0, width, height]).style("background", "#0e3040"); // Blue version
+      
       //Chart Title doesn't depend on the JSON received from backend, so it can be set up before the get request returns --
       
       // end of the code to find the real svg offset so that the mouse position.client off set issue can be corrected 
       var svg = document.querySelector('svg');
       var pt = svg.createSVGPoint();
-      var tmpLoc = pt.matrixTransform(svg.getScreenCTM().inverse());
+      // tmpLoc hols temporaray information about where the point was placed on the screen coordinant wise
+      var tmpLoc = pt.matrixTransform(svg.getScreenCTM().inverse()); 
+    
       this.loc = {'x': (-1)*tmpLoc.x, 'y' : (-1)*tmpLoc.y  }
 
-      svgElement
-      .append("text")
-      .attr("id", "chartTitle")
-      .attr("x", width / 2)
-      .attr("y", this.margin.top + 2)
-      ;
+      svgElement.append("text").attr("id", "chartTitle").attr("x", width / 2).attr("y", this.margin.top + 2);
 
+      // Default Text Title
       svgElement.select('text#chartTitle').text("Stock Chart");
 
       this.x_scale.range(this.xRange); // As soon as we know the width of the chart we can set the range to map to
       this.y_scale.range(this.yRange); // this will fill the yScale with the relevant data
-
-     
-        svgElement.append('path').attr('id', 'stockPrices'); // idk if this is important...  
-        svgElement.append('path').attr('id', 'testLine'); // This line is y Cross hair
-        // The xRange[0] element seemed like it might cause problems ... and it did. This line makes a g group named chart title and moves it to the start of the 
-        // range covered by the x axis            
-        // g chart title might just be a terrible minomer from debugging... Seems like it's the y_axis
-        svgElement.append("g").attr("id", "y_axis").attr("transform", `translate(${xRange[0]},0)`);//.attr("transform", `translate(${xRange[0]},0)`).call(y_axis); 
-        svgElement.append("g").attr("id", "x_axis").attr("transform", `translate(0,${this.yRange[0]})`);
       
-        const thisYearStartDate = new Date(2008, 11, 31);
-        
-        axios.get("http://localhost:5011/data/SanitizedStockData",  { crossdomain: true }).then(response => {
-            // the filteredData assignment can be used to add another layer of filtering 
-          var filteredData =response.data ;
-          filteredData = filteredData.filter(function (e) {
-            return e.date > thisYearStartDate;
-          });
+      svgElement.append('path').attr('id', 'stockPrices'); // idk if this is important...  
+      svgElement.append('path').attr('id', 'testLine'); // This line is y Cross hair
+      // The xRange[0] element seemed like it might cause problems ... and it did. This line makes a g group named chart title and moves it to the start of the 
+      // range covered by the x axis            
+      // g chart title might just be a terrible minomer from debugging... Seems like it's the y_axis
+      svgElement.append("g").attr("id", "y_axis").attr("transform", `translate(${this.xRange[0]},0)`);//.attr("transform", `translate(${xRange[0]},0)`).call(y_axis); 
+      svgElement.append("g").attr("id", "x_axis").attr("transform", `translate(0,${this.yRange[0]})`);
+    
 
-            this.data = filteredData; // This is somehow important for passing the data into other functions
-            
-            
-            this.x_scale.domain(d3.extent(filteredData, d => d['date']));
-            this.y_scale.domain(d3.extent(filteredData, d => d['close']));
-            
-            
-            let x_axis = d3.axisBottom(this.x_scale).tickFormat(d3.timeFormat("%b %y")); // Control what you see on the axis w/ time format
-            let y_axis = d3.axisLeft(this.y_scale);
+      
 
-            this.line // Put the actual data into the d3 line we want to use.
-            .x(  d => {return this.x_scale(d['date']);}   )
-            .y(   d => {return this.y_scale(d['close']);} );
-            
-
-            svgElement.select('path#stockPrices').data([filteredData]).attr('d', this.line);
-            svgElement.select('g#y_axis').call(y_axis);
-            svgElement.select('g#x_axis').call(x_axis);
-            //svgElement.select('path#testLine')
-
+      axios.get("http://localhost:5011/data/SanitizedStockData",  { crossdomain: true }).then(response => {
+          
+        this.data =response.data; // Data From the Server
+        const thisYearStartDate = new Date(2017, 5, 31);
+        this.filterData(thisYearStartDate); // Only include data after the date listed 
+        this.updateChartWithFilteredData();
           });
     }
 
