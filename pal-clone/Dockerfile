@@ -17,7 +17,7 @@
 #RUN npm run build
 #EXPOSE  3000
 
-# The Working Starting Version:
+# The Working Version used to Run a local version with npm start
 #FROM node:alpine
 #RUN mkdir /app
 #WORKDIR /app
@@ -45,6 +45,6 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder  /react-ui/build /usr/share/nginx/html
 
 #RUN rm -rf ./*
-#COPY --from=build /app/build .
+#COPY --from=build /app/build . # Line below exposes 3000 and 80?
 EXPOSE  3000 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

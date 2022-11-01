@@ -255,8 +255,9 @@ class FirstStockChart extends React.Component {
 
       
 
-      axios.get("http://localhost:5011/data/SanitizedStockData",  { crossdomain: true }).then(response => {
-          
+      //axios.get("http://localhost:5011/data/SanitizedStockData",  { crossdomain: true }).then(response => {
+        http://cbw123.xyz:5011/data/SanitizedStockData
+      axios.get("http://cbw123.xyz:5011/data/SanitizedStockData",  { crossdomain: true }).then(response => { 
         this.data =response.data; // Data From the Server
         const thisYearStartDate = new Date(2017, 1, 1);
         const thisYearEndDate = new Date(2018, 1, 1);
