@@ -1,25 +1,25 @@
 import React from 'react';
 import './App.css';
-import { createPopper } from '@popperjs/core';
-import { Button, Spinner, DateRangeInput} from "@blueprintjs/core";
+//import { createPopper } from '@popperjs/core';
+//import { Button, Spinner, DateRangeInput} from "@blueprintjs/core";
 //import { DateInput2, DateRangePicker} from "@blueprintjs/datetime";
 
 //import {Date};
 //import axios from "axios";
-import Quotes from  "./Quotes";
-import LineChart from "./LineChart";
-import Svg from "./Svg";
-import Plottable  from "plottable";
-import * as d3 from "d3";
-import MakeBasicChart from './MakeBasicChart';
-import Circle from "./Circle";
-import ChartClass from"./ChartClass";
-import ReactLogo from"./ReactLogo";
+//import Quotes from  "./Quotes";
+//import LineChart from "./LineChart";
+//import Svg from "./Svg";
+//import Plottable  from "plottable";
+//import * as d3 from "d3";
+//import MakeBasicChart from './MakeBasicChart';
+//import Circle from "./Circle";
+//import ChartClass from"./ChartClass";
+//import ReactLogo from"./ReactLogo";
 import FirstStockChart from './FirstStockChart';
-import { DateRangeInput2} from "@blueprintjs/datetime2";
+//import { DateRangeInput2} from "@blueprintjs/datetime2";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
-const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+//const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 //import { DateRangePicker } from '@blueprintjs/datetime';
 
 //import "@blueprintjs/datetime/lib/css/blueprint-datetime2.css";

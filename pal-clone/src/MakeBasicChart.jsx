@@ -1,4 +1,4 @@
-import * as Plottable from "plottable";
+//import * as Plottable from "plottable";
 import * as d3 from "d3";
 import { useState, useEffect, useRef } from "react";
 const MakeBasicChart = () => {

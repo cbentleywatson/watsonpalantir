@@ -1,4 +1,5 @@
 const express = require("express");
+var axios = require('axios');
 
 const app = express();
 
@@ -47,7 +48,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/me", (req, res) => {
-  res.send("Hi I am Laith");
+  res.send("Hi I am  Laith");
 });
 
 // This needs to send the data/sample-data.json file   
@@ -57,9 +58,18 @@ app.get("/data/sampleStockData", (req, res) => {
 
 
 
+/*
+axios.all([
+  axios.get('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=2017-08-03'),
+  axios.get('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=2017-08-02')
+]).then(axios.spread((response1, response2) => {
+  console.log(response1.data.url);
+  console.log(response2.data.url);
+})).catch(error => {
+  console.log(error);
+})
 
-
-
+*/
 app.listen(5011, () => {
   console.log("listening");
 });

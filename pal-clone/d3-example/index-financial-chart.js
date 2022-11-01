@@ -27,7 +27,7 @@ import {
   withDeviceRatio,
   withSize
 } from "react-financial-charts";
-import { initialData } from "./data";
+import { initialData } from "../src/data";
 
 const rotateArray2 = function (nums, k) {
   // reverse helper function

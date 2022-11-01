@@ -1,5 +1,5 @@
 cwd=$(pwd)
-# Directory names MUST end with / 
+# Directory names MUST end with /
 PROJECT_PATH="../" # script is in the tool-scripts directory
 
 FRONT_END_DIR="pal-clone/"
@@ -9,10 +9,10 @@ BACK_END_DIR="back-end/"
 BACK_END_REPO_NAME="cbentleywatson/pal-back-end"
 
 FRONT_END_INTERNAL_PORT="3000"
-FRONT_END_EXTERNAL_PORT="3005"
+FRONT_END_EXTERNAL_PORT="3000"
 
-BACK_END_INTERNAL_PORT="5005"
-BACK_END_EXTERNAL_PORT="5000"
+BACK_END_INTERNAL_PORT="5011"
+BACK_END_EXTERNAL_PORT="5011"
 
 FRONT_END_IMAGE_NAME="synchronized-front-end"
 BACK_END_IMAGE_NAME="synchronized-back-end"
@@ -38,6 +38,7 @@ function stop_both(){
 	docker stop $FRONT_END_IMAGE_NAME
 	docker stop $BACK_END_IMAGE_NAME
 }
+
 function rm_both(){
 	docker rm $FRONT_END_IMAGE_NAME
 	docker rm $BACK_END_IMAGE_NAME
@@ -67,6 +68,16 @@ if [ $1 == "all" ]; then
 	build_both
 	run_both
 fi
+
+if [ $1 == "local-containers" ]; then 
+	echo "IN local_containers"
+	stop_both
+	rm_both
+	build_both
+	cd ../
+	docker compose up
+fi
+
 
 # echo "Not a valid arg -- Valid args are build, run, stop (actually does a full remove rn), and all"
 

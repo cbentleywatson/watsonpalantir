@@ -7,12 +7,12 @@ services:
                container_name: back-end
                build: ./back-end
                #cbentleywatson/labeled
-               image: "cbentleywatson/pal-back-end"
+               image: "cbentleywatson/pal-back-end:latest"
                #image: "cbentleywatson/labeled-image-last-test-last:my-tag"
                ports:
-                       - 5000:5000
+                       - 5011:5011
          front-end:
                 build: ./pal-clone
-                image: "cbentleywatson/pal-front-end"
+                image: "cbentleywatson/pal-front-end:latest"
                 ports:
-                        - 3000:3000
+                        - 3000:80

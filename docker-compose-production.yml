@@ -4,10 +4,10 @@ version: '3'
 services:
         
         front-end:
-               image: cbentleywatson/pal-front-end
+               image: cbentleywatson/pal-front-end:latest
                ports:
                         - 80:3000
         back-end:
-               image: cbentleywatson/pal-back-end
+               image: cbentleywatson/pal-back-end:latest
                ports:
-                       - 5000:5000
+                       - 5011:5011

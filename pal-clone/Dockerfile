@@ -1,52 +1,50 @@
 #https://github.com/harblaith7/Docker-AWS-Crash-Course.git# pull official base image
-FROM node:18-alpine3.15 as build
+#FROM node:18-alpine3.15 as build
 
 
-# add `/app/node_modules/.bin` to $PATH
-#ENV PATH /pal-clone/node_modules/.bin:$PATH
-
-# install app dependencies
-#COPY pal-clone/package.json ./
-#COPY pal-clone/package-lock.json ./
-#RUN npm install 
-
-#RUN npm install react-scripts@3.4.1 -g 
-
-# add app
-WORKDIR /app
-COPY package.json .
-
-#COPY . ./
-
-# set working directory
-#WORKDIR /pal-clone
-RUN npm install
-COPY . .
-# start app
-# The EXPOSE command links the port the PROGRAAM sees to the Port Chrome communicates with. The second number is the port to use with the browser, the first is what react uses 
-
-RUN npm run build
-
-# Serving React with NGINX
-FROM nginx:stable-alpine
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=build /app/build . 
-# Would need to ensure the path to the build files is the same..
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-EXPOSE 80
-#EXPOSE 3000:3000
-EXPOSE  3000
-#EXPOSE 80:3000
-#EXPOSE 3000:3000
+# FROM REACT DOCKER TUTORIAL AT 
+# https://www.geeksforgeeks.org/how-to-call-npm-start-though-docker/
+# TWO Key Commands
+# docker build -t cbentleywatson/front-end . # front end actually probably needs to be updates
+#docker run -d -it -p 3000:80 cbentleywatson/front-end
+# DON'T forget the 3000:80 conversion. NGIXruns on port 80, which we don't want to use locally
 
 
+#WORKDIR /app
+#COPY package.json .
+#RUN npm install --legacy-peer-deps
+#COPY . .
+#RUN npm run build
+#EXPOSE  3000
 
+# The Working Starting Version:
+#FROM node:alpine
+#RUN mkdir /app
+#WORKDIR /app
+#COPY package.json /app
+#RUN npm install --legacy-peer-deps
+#COPY . /app
+#RUN npm run build
 
 #CMD ["npm", "start"]
-#CMD ["npm", "run", "" ]
-#CMD ["server","-s build"] 
-# didn't work..
 
-#CMD ["ls", "pal-clone/node_modules"]
+FROM node:alpine as builder
+#WORKDIR /app
+COPY package.json .
+RUN npm install --legacy-peer-deps  && mkdir /react-ui && mv ./node_modules ./react-ui
+WORKDIR /react-ui
+#RUN npm install --legacy-peer-deps
+COPY . .
+RUN npm run build
+
+FROM nginx:stable-alpine
+
+#!/bin/sh
+#COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder  /react-ui/build /usr/share/nginx/html
+
+#RUN rm -rf ./*
+#COPY --from=build /app/build .
+EXPOSE  3000 80
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
