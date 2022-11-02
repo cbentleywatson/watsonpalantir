@@ -6,10 +6,42 @@ import { DateRangeInput2} from "@blueprintjs/datetime2";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 // Consider adding react dom library ...https://github.com/react-d3-library/react-d3-library/wiki/Functionality
+import {db} from './firebase';
+import {collection, addDoc, Timestamp} from 'firebase/firestore';
+/*
+import { getDatabase } from "firebase/database";
+
+
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCxT78Fhs_ulpSjFVfmdXuc7Tc_NatI0Fs",
+  authDomain: "watsonpalantir.firebaseapp.com",
+  projectId: "watsonpalantir",
+  storageBucket: "watsonpalantir.appspot.com",
+  messagingSenderId: "397036910735",
+  appId: "1:397036910735:web:98a62db6d601c8214358fa",
+  measurementId: "G-5GZ2PY3C27"
+};
+
+
+
+const app = initializeApp(firebaseConfig);
+export const db = getDatabase(app);
+*/
+
+
+
+
+
+
 
 
 class FirstStockChart extends React.Component {
+  
   constructor(props) {
+    //this.firebase = require('firebase');
     super(props);
     this.myRef = React.createRef();
     this.state = {
@@ -218,7 +250,16 @@ class FirstStockChart extends React.Component {
       // This Snippet allows dynamic graph resizing
       //width = window.innerWidth - this.margin.left - this.margin.right; // Gets the value of the   width when auto resizing
       //width = ( width > targetWidth ? targetWidth : width ); // Shrink the graph if needeed -- Might be excessive / Useless   
-
+      /*
+      const Push = () => {
+        console.log("pusch called");
+        db.ref("user").set({
+          name : "name",
+          age : "age",
+        }).catch(alert);
+      }
+      Push();
+      */
       this.yRange = [this.height - this.margin.bottom, this.margin.top]; 
       this.xRange = [this.margin.left, this.width - this.margin.right ];
       const svgElement = d3.select(this.myRef.current); // The key line that allows the selection of the svg CRUCIAL #859900
