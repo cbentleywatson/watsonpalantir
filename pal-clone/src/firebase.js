@@ -30,7 +30,27 @@ set(ref(db, '/' + "hello"), {
     email: "hello",
     profile_picture : "hello"
   });
+  // Line Doesn't Break anything....
+  var dbref =ref(db, '/' + "hello");
+  dbref.toJSON("hello")
+  /*
 
+  // This Might Be listening for changes in data ....
+  ref.on("value", function(snapshot) {
+    console.log(snapshot.val());
+ }, function (error) {
+    console.log("Error: " + error.code);
+ });
+
+
+*/
+  /*
+  get(ref(db, '/' + "hello"), {
+    username: "hello",
+    email: "hello",
+    profile_picture : "hello"
+  });
+  */
 //export const ref = firebase.db.ref();
 // Alternate version of export found online
 /*

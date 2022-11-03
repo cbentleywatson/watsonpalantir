@@ -18,8 +18,9 @@ import "@blueprintjs/datetime2/lib/css/blueprint-datetime2.css";
 //import Circle from "./Circle";
 //import ChartClass from"./ChartClass";
 //import ReactLogo from"./ReactLogo";
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+//import { initializeApp } from 'firebase/app';
+//import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+/*
 const firebaseConfig = {
   apiKey: "AIzaSyCxT78Fhs_ulpSjFVfmdXuc7Tc_NatI0Fs",
   authDomain: "watsonpalantir.firebaseapp.com",
@@ -33,7 +34,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
+*/
 // Firebase access Example
 /*
 async function getCities(db) {
