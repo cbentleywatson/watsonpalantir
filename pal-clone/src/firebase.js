@@ -36,7 +36,7 @@ set(ref(db, '/' + "hello"), {
   /*
 
   // This Might Be listening for changes in data ....
-  ref.on("value", function(snapshot) {
+  ref.on("value", function(snapshot) {hh
     console.log(snapshot.val());
  }, function (error) {
     console.log("Error: " + error.code);
